@@ -1,5 +1,5 @@
+﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 
@@ -8,10 +8,8 @@ public class SubGoal
     public Dictionary<string, int> sgoals;
     public bool remove;
 
-    // Constructor
     public SubGoal(string s, int i, bool r)
     {
-
         sgoals = new Dictionary<string, int>();
         sgoals.Add(s, i);
         remove = r;
@@ -20,7 +18,6 @@ public class SubGoal
 
 public class GAgent : MonoBehaviour
 {
-
     public List<GAction> actions = new List<GAction>();
     public Dictionary<SubGoal, int> goals = new Dictionary<SubGoal, int>();
     public WorldStates beliefs = new WorldStates();
@@ -31,16 +28,13 @@ public class GAgent : MonoBehaviour
     SubGoal currentGoal;
 
     // Start is called before the first frame update
-    protected virtual void Start()
+    public void Start()
     {
-
         GAction[] acts = this.GetComponents<GAction>();
         foreach (GAction a in acts)
-        {
-
             actions.Add(a);
-        }
     }
+
 
     bool invoked = false;
     void CompleteAction()
@@ -50,12 +44,11 @@ public class GAgent : MonoBehaviour
         invoked = false;
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {
-        if(currentAction != null && currentAction.running)
+        if (currentAction != null && currentAction.running)
         {
-            if(currentAction.agent.hasPath && currentAction.agent.remainingDistance < 1f)
+            if (currentAction.agent.hasPath && currentAction.agent.remainingDistance < 1f)
             {
                 if (!invoked)
                 {
@@ -72,11 +65,10 @@ public class GAgent : MonoBehaviour
 
             var sortedGoals = from entry in goals orderby entry.Value descending select entry;
 
-            foreach(KeyValuePair<SubGoal, int> sg in sortedGoals)
+            foreach (KeyValuePair<SubGoal, int> sg in sortedGoals)
             {
                 actionQueue = planner.plan(actions, sg.Key.sgoals, null);
-
-                if(actionQueue != null)
+                if (actionQueue != null)
                 {
                     currentGoal = sg.Key;
                     break;
@@ -99,11 +91,9 @@ public class GAgent : MonoBehaviour
             if (currentAction.PrePerform())
             {
                 if (currentAction.target == null && currentAction.targetTag != "")
-                {
                     currentAction.target = GameObject.FindWithTag(currentAction.targetTag);
-                }
 
-                if (currentAction.targetTag != null)
+                if (currentAction.target != null)
                 {
                     currentAction.running = true;
                     currentAction.agent.SetDestination(currentAction.target.transform.position);
@@ -113,6 +103,8 @@ public class GAgent : MonoBehaviour
             {
                 actionQueue = null;
             }
+
         }
+
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,20 +14,15 @@ public sealed class GWorld
 
     private GWorld()
     {
-
     }
 
     public static GWorld Instance
     {
-        get 
-        { 
-            return instance; 
-        }
+        get { return instance; }
     }
 
     public WorldStates GetWorld()
     {
         return world;
     }
-
 }
